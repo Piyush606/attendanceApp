@@ -104,7 +104,7 @@ export default function Dashboard() {
         <div className="d-flex justify-content-between align-items-center mb-4">
         <div>
         <h2>Welcome, {user?.email}</h2>
-        <p>Today's Date: {today}</p>
+        <p>Date: {today}</p>
         </div>
       <button
         className="btn btn-outline-danger"

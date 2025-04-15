@@ -7,11 +7,11 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 
 function MyApp({ Component, pageProps }) {
   return (
-    <AuthProvider>
+    // <AuthProvider>
       <PreviewProvider>
         <Component {...pageProps} />
       </PreviewProvider>
-    </AuthProvider>
+    // </AuthProvider>
   );
 }
 
