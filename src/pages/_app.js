@@ -1,6 +1,8 @@
+'use client';
+
 // import { AuthProvider } from "../context/AuthContext";
 import { PreviewProvider } from "../context/PreviewContext";
-import 'bootstrap/dist/js/bootstrap.bundle.min';
+// import 'bootstrap/dist/js/bootstrap.bundle.min';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
