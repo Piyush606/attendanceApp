@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { auth } from '@/lib/firebase';
 // import Navbar from "@/components/Navbar";
 import { signInWithEmailAndPassword } from 'firebase/auth';
@@ -15,45 +15,83 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const handleLogin = async (e) => {
+//   const handleLogin = async (e) => {
+//     e.preventDefault();
+//     setError('');
+
+//     try {
+//       const userCredential = await signInWithEmailAndPassword(auth, email, password);
+//       const user = userCredential.user;
+//       const token = await userCredential.user.getIdToken(); // Firebase JWT
+
+//       // Get user role from Firestore
+//         const docRef = doc(db, "users", user.uid);
+//         const docSnap = await getDoc(docRef);
+//         if (!docSnap.exists()) {
+//         setError("No user profile found.");
+//         return;
+//         }
+
+//         const userData = docSnap.data();
+//         if (userData.role !== "incharge" && userData.role !== "safety officer") {
+//         setError("You are not authorized to access this dashboard.");
+//         return;
+//         }
+        
+//         if (userData.role === "safety officer"){
+//             window.location.href = "https://www.notion.so/Safety-Officer-1d62a6f9631b800b8593da6966a79fc3?pvs=4";
+//             return;
+//         }
+
+//       // Store token in localStorage (or cookies if you prefer)
+//       localStorage.setItem('token', token);
+
+//       // Redirect to dashboard
+//       router.push('/dashboard');
+//     } catch (err) {
+//       setError('Invalid email or password');
+//       console.error(err);
+//     }
+//   };
+
+const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
-
+  
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-      const token = await userCredential.user.getIdToken(); // Firebase JWT
-
-      // Get user role from Firestore
-        const docRef = doc(db, "users", user.uid);
-        const docSnap = await getDoc(docRef);
-        if (!docSnap.exists()) {
+      const token = await user.getIdToken();
+  
+      const docRef = doc(db, "users", user.uid);
+      const docSnap = await getDoc(docRef);
+  
+      if (!docSnap.exists()) {
         setError("No user profile found.");
         return;
-        }
-
-        const userData = docSnap.data();
-        if (userData.role !== "incharge" && userData.role !== "safety officer") {
+      }
+  
+      const userData = docSnap.data();
+  
+      if (userData.role !== "incharge" && userData.role !== "safety officer") {
         setError("You are not authorized to access this dashboard.");
         return;
-        }
-        
-        if (userData.role === "safety officer"){
-            window.location.href = "https://www.notion.so/Safety-Officer-1d62a6f9631b800b8593da6966a79fc3?pvs=4";
-            return;
-        }
-
-      // Store token in localStorage (or cookies if you prefer)
+      }
+  
       localStorage.setItem('token', token);
-
-      // Redirect to dashboard
-      router.push('/dashboard');
+  
+      // Redirect based on role
+      if (userData.role === "safety officer") {
+        router.push("/safety");
+      } else {
+        router.push("/dashboard");
+      }
     } catch (err) {
       setError('Invalid email or password');
       console.error(err);
     }
   };
-
+  
   return (<>
     {/* <Navbar/> */}
     <div className="container mt-5" style={{ maxWidth: 500 }}>
